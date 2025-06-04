@@ -16,33 +16,39 @@ MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title) {
 void MainFrame::initSearchPanel() {
     //wxStatusBar();
 
-    searchPanel = new wxPanel(this, wxID_ANY);
-    sPaneld1 = new wxPanel(searchPanel, wxID_ANY);
-    sPaneld2 = new wxPanel(searchPanel, wxID_ANY);
-    searchBar = new wxTextCtrl(sPaneld1, wxID_ANY, "", wxDefaultPosition, wxSize(500, 25));
-    submitSearchButton = new wxButton(sPaneld2, wxID_ANY, "buscar");
-    radioBox = new wxRadioBox(sPaneld2, wxID_ANY, "modo", wxDefaultPosition, wxDefaultSize, 3, choices);
-    searchResults = new wxListBox(sPaneld1, wxID_ANY);
-    s_insertMode = new wxButton(sPaneld1, wxID_ANY, "Insert Mode");
-    s_deleteMode= new wxButton(sPaneld1, wxID_ANY, "delete Mode");
+    s_searchPanel = new wxPanel(this, wxID_ANY);
+    s_Paneld1 = new wxPanel(s_searchPanel, wxID_ANY);
+    s_Paneld2 = new wxPanel(s_searchPanel, wxID_ANY);
+    s_searchBar = new wxTextCtrl(s_Paneld1, wxID_ANY, "", wxDefaultPosition, wxSize(-1, 35));
+    s_submitSearchButton = new wxButton(s_Paneld2, wxID_ANY, "buscar");
+    s_radioBox = new wxRadioBox(s_Paneld2, wxID_ANY, "modo", wxDefaultPosition, wxDefaultSize, 3, choices, 2, wxRA_VERTICAL);
+    s_searchResults = new wxListBox(s_Paneld1, wxID_ANY);
 
-    sBoxSizer1 = new wxBoxSizer(wxVERTICAL);
-    sBoxSizer1->Add(searchBar,1);
-    sBoxSizer1->Add(searchResults, 1);
-    sBoxSizer1->Add(s_insertMode, 1);
-    sBoxSizer1->Add(s_deleteMode, 1);
+    s_Paneld11 = new wxPanel(s_Paneld1, wxID_ANY);
+    s_insertMode = new wxButton(s_Paneld11, wxID_ANY, "Insertar Usuario");
+    s_deleteMode= new wxButton(s_Paneld11, wxID_ANY, "Eliminar Usuario");
 
-    sPaneld1->SetSizerAndFit(sBoxSizer1);
+    s_BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
+    s_BoxSizer11->Add(s_insertMode, 1, wxEXPAND);
+    s_BoxSizer11->Add(s_deleteMode, 1, wxEXPAND);
+    s_Paneld11->SetSizerAndFit(s_BoxSizer11);
 
-    sBoxSizer2 = new wxBoxSizer(wxVERTICAL);
+    s_BoxSizer1 = new wxBoxSizer(wxVERTICAL);
+    s_BoxSizer1->Add(s_searchBar, 0, wxEXPAND);
+    s_BoxSizer1->Add(s_searchResults, 9, wxEXPAND);
+    s_BoxSizer1->Add(s_Paneld11, 1, wxEXPAND);
 
-    sBoxSizer2->Add(submitSearchButton);
-    sBoxSizer2->Add(radioBox);
-    sPaneld2->SetSizerAndFit(sBoxSizer2);
+    s_Paneld1->SetSizerAndFit(s_BoxSizer1);
+
+    s_BoxSizer2 = new wxBoxSizer(wxVERTICAL);
+
+    s_BoxSizer2->Add(s_submitSearchButton, 0, wxEXPAND);
+    s_BoxSizer2->Add(s_radioBox, 1);
+    s_Paneld2->SetSizerAndFit(s_BoxSizer2);
 
     s_panelBoxSizer = new wxBoxSizer(wxHORIZONTAL);
-    s_panelBoxSizer->Add(sPaneld1, 1);
-    s_panelBoxSizer->Add(sPaneld2, 1);
+    s_panelBoxSizer->Add(s_Paneld1, 5, wxEXPAND);
+    s_panelBoxSizer->Add(s_Paneld2, 1, wxEXPAND);
 
-    searchPanel->SetSizerAndFit(s_panelBoxSizer);
+    s_searchPanel->SetSizerAndFit(s_panelBoxSizer);
 }
