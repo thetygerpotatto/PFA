@@ -1,9 +1,5 @@
 #include "MainFrame.h"
-#include "wx/gdicmn.h"
-#include "wx/generic/panelg.h"
-#include "wx/gtk/button.h"
-#include "wx/gtk/stattext.h"
-#include "wx/sizer.h"
+#include "wx/event.h"
 #include <wx-3.2/wx/wx.h>
 
 MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title) {
@@ -11,13 +7,22 @@ MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title) {
     this->SetClientSize(800, 500);
     this->Center();
     // Components
+    book = new wxSimplebook(this, wxID_ANY);
+    initSearchPanel();
+    initAddPanel();
     initDeletePanel();
+    
+    book->AddPage(s_searchPanel, "View 1");
+    book->AddPage(a_addPanel, "View 2");
+    book->AddPage(d_deletePanel, "View 3");
+
+    book->SetSelection(0);
 }
 
 void MainFrame::initSearchPanel() {
     //wxStatusBar();
 
-    s_searchPanel = new wxPanel(this, wxID_ANY);
+    s_searchPanel = new wxPanel(book, wxID_ANY);
     s_Paneld1 = new wxPanel(s_searchPanel, wxID_ANY);
     s_Paneld2 = new wxPanel(s_searchPanel, wxID_ANY);
     s_searchBar = new wxTextCtrl(s_Paneld1, wxID_ANY, "", wxDefaultPosition, wxSize(-1, 35));
@@ -51,11 +56,16 @@ void MainFrame::initSearchPanel() {
     s_panelBoxSizer->Add(s_Paneld1, 5, wxEXPAND);
     s_panelBoxSizer->Add(s_Paneld2, 1, wxEXPAND);
 
-    s_searchPanel->SetSizerAndFit(s_panelBoxSizer);
+    s_searchPanel->SetSizer(s_panelBoxSizer);
+    s_panelBoxSizer->SetSizeHints(book);
+
+    //Set up events
+    s_insertMode->Bind(wxEVT_BUTTON, &MainFrame::setAddView, this);
+    s_deleteMode->Bind(wxEVT_BUTTON, &MainFrame::setDeleteView, this);
 }
 
 void MainFrame::initAddPanel() {
-    a_addPanel = new wxPanel(this);
+    a_addPanel = new wxPanel(book);
     a_Paneld1 = new wxPanel(a_addPanel);
     a_Paneld2 = new wxPanel(a_addPanel);
     a_Paneld11 = new wxPanel(a_Paneld1);
@@ -80,7 +90,7 @@ void MainFrame::initAddPanel() {
     
     a_addPanelSizer->Add(a_Paneld1, 4, wxEXPAND);
     a_addPanelSizer->Add(a_Paneld2, 1, wxEXPAND);
-    a_addPanel->SetSizerAndFit(a_addPanelSizer);
+    a_addPanel->SetSizer(a_addPanelSizer);
 
     a_paneld1Sizer->Add(a_idLabel, 0, wxEXPAND);
     a_paneld1Sizer->Add(a_idCamp, 0, wxEXPAND);
@@ -97,10 +107,15 @@ void MainFrame::initAddPanel() {
 
     a_paneld2Sizer->Add(a_insertUserButton, 0, wxEXPAND);
     a_Paneld2->SetSizerAndFit(a_paneld2Sizer);
+    a_addPanelSizer->SetSizeHints(book);
+
+    // Set up events
+    a_deleteMode->Bind(wxEVT_BUTTON, &MainFrame::setDeleteView, this);
+    a_searchMode->Bind(wxEVT_BUTTON, &MainFrame::setSearchView, this);
 }
 
 void MainFrame::initDeletePanel() {
-    d_deletePanel = new wxPanel(this, wxID_ANY);
+    d_deletePanel = new wxPanel(book, wxID_ANY);
     d_Paneld1 = new wxPanel(d_deletePanel, wxID_ANY);
     d_Paneld2 = new wxPanel(d_deletePanel, wxID_ANY);
     d_searchBar = new wxTextCtrl(d_Paneld1, wxID_ANY, "", wxDefaultPosition, wxSize(-1, 35));
@@ -134,6 +149,22 @@ void MainFrame::initDeletePanel() {
     d_panelBoxSizer->Add(d_Paneld1, 5, wxEXPAND);
     d_panelBoxSizer->Add(d_Paneld2, 1, wxEXPAND);
 
-    d_deletePanel->SetSizerAndFit(d_panelBoxSizer);
-    
+    d_deletePanel->SetSizer(d_panelBoxSizer);
+    d_panelBoxSizer->SetSizeHints(book);
+
+    // Set up events
+    d_insertMode->Bind(wxEVT_BUTTON, &MainFrame::setAddView, this);
+    d_searchMode->Bind(wxEVT_BUTTON, &MainFrame::setSearchView, this);
+}
+
+void MainFrame::setSearchView(wxCommandEvent& evt) {
+    book->SetSelection(0);
+}
+
+void MainFrame::setAddView(wxCommandEvent& evt) {
+    book->SetSelection(1);
+}
+
+void MainFrame::setDeleteView(wxCommandEvent& evt) {
+    book->SetSelection(2);
 }

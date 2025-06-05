@@ -1,13 +1,13 @@
 #pragma once
-#include "wx/sizer.h"
 #include <wx-3.2/wx/wx.h>
+#include <wx-3.2/wx/simplebook.h>
 
 class MainFrame : public wxFrame {
 public:
     MainFrame(const wxString& title);
     //Main Components
     wxStaticText* headLine;
-
+    wxSimplebook* book;
     // Search Components
     wxPanel* s_searchPanel;
     wxPanel* s_Paneld1;
@@ -58,7 +58,12 @@ public:
     wxBoxSizer* d_BoxSizer2;
     wxBoxSizer* d_BoxSizer11;
 private:
+    //Initializers
     void initSearchPanel();
     void initAddPanel();
     void initDeletePanel();
+    // Event handlers
+    void setAddView(wxCommandEvent& evt);
+    void setSearchView(wxCommandEvent& evt);
+    void setDeleteView(wxCommandEvent& evt);
 };
