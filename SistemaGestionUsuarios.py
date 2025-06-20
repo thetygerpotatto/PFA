@@ -1,4 +1,5 @@
 from NodoUsuario import NodoUsuario
+from tabulate import tabulate
 
 class SistemaGestionUsuarios(NodoUsuario):
     def __init__(self):
@@ -67,19 +68,26 @@ class SistemaGestionUsuarios(NodoUsuario):
     def insertar_usuario(self):
         while True:
             try:
-                id = int(input("ingrese el id del nuevo usuario:"))
-                break
+                id = int(input("Ingrese el ID del nuevo usuario: "))   
+                if id <= 0:
+                    print("El ID debe ser un número entero positivo.")
+                    continue
+                else:      
+                    break  
             except ValueError:
-                print("Entrada no válida. Por favor, ingrese un número entero.")
+                print("Se desubicó pa, ingrese un número entero egh.")
                 continue
-
         datos = input("Ingrese el nombre del usuario: ")
-        self.raiz = self.insertar_aux(self.raiz, id, {"nombre": datos})
-        print(self.recorrido_inorden())
+        self.raiz = self.insertar_aux(self.raiz, id, datos)
+
 
     def insertar_aux(self, nodo, id_usuario, datos):
         if not nodo:
             nuevo_nodo = NodoUsuario(id_usuario, datos)
+
+            print("Se ha agregado el usuario:")
+            print(f"ID: {nuevo_nodo.id_usuario} | Nombre: {nuevo_nodo.datos}")
+            
             return nuevo_nodo
 
         if id_usuario < nodo.id_usuario:
@@ -92,8 +100,20 @@ class SistemaGestionUsuarios(NodoUsuario):
 
         return self.balancear(nodo)
 
-    def eliminar_usuario(self, id_usuario):
-        self.raiz = self.eliminar(self.raiz, id_usuario)
+    def eliminar_usuario(self):
+        while True:
+            try:
+                id = int(input("Ingrese el ID del usuario a eliminar: "))   
+                if id <= 0:
+                    print("El ID debe ser un número entero positivo.")
+                    continue
+                else:      
+                    break  
+            except ValueError:
+                print("Se desubicó pa, ingrese un número entero egh.")
+                continue
+        self.raiz = self.eliminar(self.raiz, id)
+
 
     def eliminar(self, nodo, id_usuario):
         if not nodo:
@@ -106,48 +126,109 @@ class SistemaGestionUsuarios(NodoUsuario):
             nodo.derecho = self.eliminar(nodo.derecho, id_usuario)
         elif id_usuario == nodo.id_usuario:
             if not nodo.izquierdo:
+                print("Se ha eliminado a: ")
+                print(f"ID: {id_usuario}")
                 return nodo.derecho
             elif not nodo.derecho:
+                print("Se ha eliminado a: ")
+                print(f"ID: {id_usuario}")
                 return nodo.izquierdo
             
-            temp = self.minimo_nodo(nodo.derecho)
+            temp = self.ultimo_izquierdo(nodo.derecho)
             nodo.id_usuario = temp.id_usuario
             nodo.datos = temp.datos
             nodo.derecho = self.eliminar(nodo.derecho, temp.id_usuario)
 
-
         return self.balancear(nodo)
 
+    def ultimo_derecho(self, nodo):
+        actual = nodo
+        while actual.derecho:
+            actual = actual.derecho
 
-    def minimo_nodo(self, nodo):
+        return actual
+    
+    def ultimo_izquierdo(self, nodo):
         actual = nodo
         while actual.izquierdo:
             actual = actual.izquierdo
 
         return actual
 
-    def _buscar_mayor_igual(self, id_buscar):
-        resultado = self.buscar_mayor_igual(self.raiz, id_buscar, None)
-        return resultado
+    def minimo_nodo(self):
+        nodo = self.raiz
+        minimo = self.ultimo_izquierdo(nodo)
+        print(f"ID: {minimo.id_usuario} | Nombre: {minimo.datos}")
 
-    def buscar_mayor_igual(self, nodo, id_buscar, candidato):
+    def maximo_nodo(self):
+        nodo = self.raiz
+        maximo = self.ultimo_derecho(nodo)
+        print(f"ID: {maximo.id_usuario} | Nombre: {maximo.datos}")
+
+    def buscar_usuario(self):
+        while True:
+            try:
+                id = int(input("Ingrese el ID del usuario que desea buscar: "))   
+                if id <= 0:
+                    print("El ID debe ser un número entero positivo.")
+                    continue
+                else:      
+                    break  
+            except ValueError:
+                print("Se desubicó pa, ingrese un número entero egh.")
+                continue
+        resultado = self.buscar_usuario_aux(self.raiz, id)
+        print(resultado)
+
+    def buscar_usuario_aux(self, nodo, id_buscar):
         if not nodo:
-            return candidato
-
+            return "No se encontró al sujeto con ese ID."
+         
         if nodo.id_usuario == id_buscar:
-            return nodo
+            return f"ID: {nodo.id_usuario} | Nombre: {nodo.datos}"
         elif nodo.id_usuario > id_buscar:
-            return self.buscar_mayor_igual(nodo.izquierdo, id_buscar, nodo)
+            return self.buscar_usuario_aux(nodo.izquierdo, id_buscar)
+        elif nodo.id_usuario < id_buscar:
+            return self.buscar_usuario_aux(nodo.derecho, id_buscar)
         else:
-            return self.buscar_mayor_igual(nodo.derecho, id_buscar, candidato)
+            return "com carajos llegó usted acá"
 
-    def recorrido_inorden(self):
+    def listar_usuarios(self):
         resultado = []
-        self.inorden(self.raiz, resultado)
-        return resultado
+        self.listar_usuarios_aux(self.raiz, resultado)
+        print(tabulate(resultado, headers=["ID Usuario", "Datos"], tablefmt="rounded_outline"))
 
-    def inorden(self, nodo, resultado):
+    def listar_usuarios_aux(self, nodo, resultado):
         if nodo:
-            self.inorden(nodo.izquierdo, resultado)
-            resultado.append(nodo.id_usuario)
-            self.inorden(nodo.derecho, resultado)
+            self.listar_usuarios_aux(nodo.izquierdo, resultado)
+            nuevos_datos = [nodo.id_usuario, nodo.datos]
+            resultado.append(nuevos_datos)
+            self.listar_usuarios_aux(nodo.derecho, resultado)
+
+    def leer_txt(self):
+        archivo = input("Ingrese la ubicación del archivo de texto que desea registrar: ")
+        try:
+            with open(archivo, "r", encoding="utf-8") as file:
+                for linea in file:
+                    linea = linea.strip()
+                    if not linea:
+                        continue  # Ignora líneas vacías
+
+                    partes = linea.split(",")
+                    if len(partes) != 2:
+                        print(f"Formato incorrecto en línea: '{linea}'")
+                        continue
+
+                    id_usuario_str, nombre = partes
+                    try:
+                        id_usuario = int(id_usuario_str.strip())
+                        nombre = nombre.strip()
+                        self.raiz = self.insertar_aux(self.raiz, id_usuario, nombre)
+                    except ValueError:
+                        print(f"ID inválido en línea: '{linea}'")
+        except FileNotFoundError:
+            print(f"El archivo '{archivo}' no se encontró.")
+        except Exception as e:
+            print(f"Error al leer el archivo: {e}")
+
+# C:\Users\dilan\OneDrive\Escritorio\xd.txt

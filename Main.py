@@ -13,6 +13,7 @@ def menu(self):
         ["4", "Mostrar Usuario con ID menor"],
         ["5", "Busqueda de Usuario por ID"],
         ["6", "Mostrar Usuarios Activos"],
+        ["7", "Registar mediante archivo de texto"],
         ["0", "Salir"]]
         
         print(tabulate(Tabla_Menu, headers=["Opción", "Descripción"], tablefmt="rounded_outline"))
@@ -20,23 +21,23 @@ def menu(self):
             opc = int(input("Seleccione una opción: "))
             match opc:
                 case 1:
-                    pass
                     self.insertar_usuario()
                 case 2:
-                    pass
-                    #eliminar_usuario()
+                    self.eliminar_usuario()
                 case 3:
                     pass
-                    #buscar_usuario_mayor()
+                    self.maximo_nodo()
                 case 4:
                     pass
-                    #mostrar_usuario_menor()
+                    self.minimo_nodo()
                 case 5:
                     pass
-                    #busqueda_usuario()
+                    self.buscar_usuario()
                 case 6:
                     pass
-                    #mostrar_usuarios_activos()
+                    self.listar_usuarios()
+                case 7:
+                    self.leer_txt()
                 case 0:
                     print("chauu...")
                     break
@@ -50,32 +51,3 @@ def menu(self):
 if __name__ == "__main__":
     sistema = SistemaGestionUsuarios()
     menu(sistema)
-    """sistema.agregar_usuario(50, {"nombre": "Ana"})
-    sistema.agregar_usuario(30, {"nombre": "Luis"})
-    sistema.agregar_usuario(70, {"nombre": "Marta"})
-    sistema.agregar_usuario(20, {"nombre": "Carlos"})
-    sistema.agregar_usuario(40, {"nombre": "Laura"})
-    sistema.agregar_usuario(60, {"nombre": "Juan"})
-    sistema.agregar_usuario(80, {"nombre": "Sofía"})
-    print("Usuarios ordenados:", sistema.recorrido_inorden())
-    usuario = sistema._buscar_mayor_igual(45)
-    if usuario:
-        print(f"Usuario con ID >= 45: {usuario.id_usuario}, Datos: {usuario.datos}")
-
-    sistema.eliminar_usuario(40)
-    print("----Después de eliminar ID 40:", sistema.recorrido_inorden())
-
-    usuario = sistema._buscar_mayor_igual(45)
-    if usuario:
-        print(f"Usuario con ID >= 45: {usuario.id_usuario}, Datos: {usuario.datos}")
-    
-    #funcion para agregar usuari   
-    # def insertar():
-    #     id = int(input("ingrese el id del nuevo usuario:"))
-    #     nombre = input("Ingrese el nombre del usuario")
-    #linea para condicional de validación
-    #     sistema.agregar_usuario(id, {"nombre": nombre})
-
-    # def eliminar():
-    #     id = int(input("Inserte el Id del usuario a eliminar"))
-    #     sistema.eliminar_usuario(id)"""
