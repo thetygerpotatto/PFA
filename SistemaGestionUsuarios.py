@@ -115,23 +115,21 @@ class SistemaGestionUsuarios(NodoUsuario):
         self.raiz = self.eliminar(self.raiz, id)
 
 
-    def eliminar(self, nodo, id_usuario):
+    def eliminar(self, nodo, id_buscar):
         if not nodo:
-            print(f"El usuario con ID {id_usuario} no existe.")
+            print(f"El usuario con ID {id_buscar} no existe.")
             return nodo
 
-        if id_usuario < nodo.id_usuario:
-            nodo.izquierdo = self.eliminar(nodo.izquierdo, id_usuario)
-        elif id_usuario > nodo.id_usuario:
-            nodo.derecho = self.eliminar(nodo.derecho, id_usuario)
-        elif id_usuario == nodo.id_usuario:
+        if id_buscar < nodo.id_usuario:
+            nodo.izquierdo = self.eliminar(nodo.izquierdo, id_buscar)
+        elif id_buscar > nodo.id_usuario:
+            nodo.derecho = self.eliminar(nodo.derecho, id_buscar)
+        elif id_buscar == nodo.id_usuario:
             if not nodo.izquierdo:
-                print("Se ha eliminado a: ")
-                print(f"ID: {id_usuario}")
+                print("Se ha eliminado el ID")
                 return nodo.derecho
             elif not nodo.derecho:
-                print("Se ha eliminado a: ")
-                print(f"ID: {id_usuario}")
+                print("Se ha eliminado el ID")
                 return nodo.izquierdo
             
             temp = self.ultimo_izquierdo(nodo.derecho)
