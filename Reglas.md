@@ -7,9 +7,9 @@ Para que el sistema pueda leer e importar correctamente los usuarios desde un ar
 Cada línea debe contener **exactamente dos elementos separados por coma (,):**
 
 ### Ejemplos:
-1, Dilan
-2, Juan
-3, Profe
-97887, X
+##### 1, Dilan
+##### 2, Juan
+##### 3, Profe
+##### 97887, X
 
 Si NO se sigue este orden no funcionará.
