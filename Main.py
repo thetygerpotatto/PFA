@@ -1,5 +1,7 @@
 ## Árbol AVL ( Adelson-Velsky y Landis) para la gestión de usuarios
 
+from tabulate import tabulate
+
 class NodoUsuario:
     def __init__(self, id_usuario, datos=None):
         self.id_usuario = id_usuario
@@ -149,10 +151,56 @@ class SistemaGestionUsuarios:
             resultado.append(nodo.id_usuario)
             self.inorden(nodo.derecho, resultado)
 
+
+
+def menu():
+    # sistema = SistemaGestionUsuarios()
+    Tabla_Menu = [
+        ["1", "Agregar Usuario"],
+        ["2", "Eliminar Usuario"],
+        ["3", "Mostrar Usuario con ID mayor"],
+        ["4", "Mostrar Usuario con ID menor"],
+        ["5", "Busqueda de Usuario por ID"],
+        ["6", "Mostrar Usuarios Activos"],
+        ["0", "Salir"]
+    ]
+    print(tabulate(Tabla_Menu, headers=["Opción", "Descripción"], tablefmt="rounded_outline"))
+    while True:
+        try:
+            opc = int(input("Seleccione una opción: "))
+            match opc:
+                case 1:
+                    pass
+                    #insertar_usuario()
+                case 2:
+                    pass
+                    #eliminar_usuario()
+                case 3:
+                    pass
+                    #buscar_usuario_mayor()
+                case 4:
+                    pass
+                    #mostrar_usuario_menor()
+                case 5:
+                    pass
+                    #busqueda_usuario()
+                case 6:
+                    pass
+                    #mostrar_usuarios_activos()
+                case 0:
+                    print("chauu...")
+                    break
+                case _:
+                    print("Opción no válida. Intente de nuevo.")
+        except ValueError:
+            print("Entrada no válida. Por favor, ingrese un número entero.")
+
+                
+
 if __name__ == "__main__":
     sistema = SistemaGestionUsuarios()
-
-    sistema.agregar_usuario(50, {"nombre": "Ana"})
+    menu()
+    """sistema.agregar_usuario(50, {"nombre": "Ana"})
     sistema.agregar_usuario(30, {"nombre": "Luis"})
     sistema.agregar_usuario(70, {"nombre": "Marta"})
     sistema.agregar_usuario(20, {"nombre": "Carlos"})
@@ -180,4 +228,4 @@ if __name__ == "__main__":
 
     # def eliminar():
     #     id = int(input("Inserte el Id del usuario a eliminar"))
-    #     sistema.eliminar_usuario(id)
+    #     sistema.eliminar_usuario(id)"""
