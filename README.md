@@ -26,8 +26,8 @@ Este proyecto implementa un **sistema de administración de usuarios** utilizand
 ```
 PFA/
 ├── Main.py                                 # Archivo principal
-├── NodoUsuarioClase.py                     # Clase Usuario (ID, nombre, correo)
-├── SistemaGestionUsuariosClase.py          # Implementación del árbol AVL
+├── NodoUsuario.py                          # Clase Usuario (nodos)
+├── SistemaGestionUsuarios.py               # Implementación del árbol AVL
 └── README.md                               # Este documento
 ```
 
