@@ -1,10 +1,15 @@
 #pragma once
+#include <string>
 #include <wx-3.2/wx/wx.h>
 #include <wx-3.2/wx/simplebook.h>
+#include "User.hpp"
+#include "wx/arrstr.h"
 
+wxString userToWxstring(User u);
 class MainFrame : public wxFrame {
 public:
     MainFrame(const wxString& title);
+    wxArrayString* searchResults= new wxArrayString();
     //Main Components
     wxStaticText* headLine;
     wxSimplebook* book;
@@ -66,4 +71,9 @@ private:
     void setAddView(wxCommandEvent& evt);
     void setSearchView(wxCommandEvent& evt);
     void setDeleteView(wxCommandEvent& evt);
+    
+    void searchUserOnSearchTab(wxCommandEvent& evt);
+    void searchUserOnDeleteTab(wxCommandEvent& evt);
+    void insertUser(wxCommandEvent& evt);
 };
+

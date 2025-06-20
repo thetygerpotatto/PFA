@@ -1,5 +1,6 @@
-#include "MainFrame.h"
+#include "MainFrame.hpp"
 #include "wx/event.h"
+#include "wx/gdicmn.h"
 #include <wx-3.2/wx/wx.h>
 
 MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title) {
@@ -17,10 +18,11 @@ MainFrame::MainFrame(const wxString& title): wxFrame(nullptr, wxID_ANY, title) {
     book->AddPage(d_deletePanel, "View 3");
 
     book->SetSelection(0);
+    CreateStatusBar();
+    wxLogStatus("Hey what's up mfrs");
 }
 
 void MainFrame::initSearchPanel() {
-    //wxStatusBar();
 
     s_searchPanel = new wxPanel(book, wxID_ANY);
     s_Paneld1 = new wxPanel(s_searchPanel, wxID_ANY);
@@ -28,7 +30,7 @@ void MainFrame::initSearchPanel() {
     s_searchBar = new wxTextCtrl(s_Paneld1, wxID_ANY, "", wxDefaultPosition, wxSize(-1, 35));
     s_submitSearchButton = new wxButton(s_Paneld2, wxID_ANY, "buscar");
     s_radioBox = new wxRadioBox(s_Paneld2, wxID_ANY, "modo", wxDefaultPosition, wxDefaultSize, 3, choices, 2, wxRA_VERTICAL);
-    s_searchResults = new wxListBox(s_Paneld1, wxID_ANY);
+    s_searchResults = new wxListBox(s_Paneld1, wxID_ANY, wxDefaultPosition, wxDefaultSize, *searchResults);
 
     s_Paneld11 = new wxPanel(s_Paneld1, wxID_ANY);
     s_insertMode = new wxButton(s_Paneld11, wxID_ANY, "Insertar Usuario");
@@ -62,6 +64,7 @@ void MainFrame::initSearchPanel() {
     //Set up events
     s_insertMode->Bind(wxEVT_BUTTON, &MainFrame::setAddView, this);
     s_deleteMode->Bind(wxEVT_BUTTON, &MainFrame::setDeleteView, this);
+    s_submitSearchButton->Bind(wxEVT_BUTTON, &MainFrame::searchUserOnSearchTab, this);
 }
 
 void MainFrame::initAddPanel() {
@@ -167,4 +170,22 @@ void MainFrame::setAddView(wxCommandEvent& evt) {
 
 void MainFrame::setDeleteView(wxCommandEvent& evt) {
     book->SetSelection(2);
+}
+
+void MainFrame::searchUserOnSearchTab(wxCommandEvent& evt){
+    this->searchResults->Add("hey");
+    this->s_searchResults->Clear();
+    this->s_searchResults->Set(*this->searchResults);
+}
+
+void MainFrame::searchUserOnDeleteTab(wxCommandEvent& evt) {
+
+}
+
+void MainFrame::insertUser(wxCommandEvent& evt){
+
+}
+
+wxString userToWxstring(User u) {
+    return wxString("id: " + std::to_string(u.id) + " name: " +u.name + " email: "+u.email);
 }
