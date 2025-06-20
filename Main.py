@@ -73,18 +73,29 @@ class SistemaGestionUsuarios:
 
         return nodo
 
-    def agregar_usuario(self, id_usuario, datos=None):
-        self.raiz = self._insertar(self.raiz, id_usuario, datos)
+    # funcion para agregar usuario
+    def insertar_usuario(self):
+        while True:
+            try:
+                id = int(input("ingrese el id del nuevo usuario:"))
+                break
+            except ValueError:
+                print("Entrada no válida. Por favor, ingrese un número entero.")
+                continue
 
-    def _insertar(self, nodo, id_usuario, datos):
+        datos = input("Ingrese el nombre del usuario: ")
+        self.raiz = sistema.insertar_aux(self.raiz, id, {"nombre": datos})
+        print(sistema.recorrido_inorden())
+
+    def insertar_aux(self, nodo, id_usuario, datos):
         if not nodo:
             nuevo_nodo = NodoUsuario(id_usuario, datos)
             return nuevo_nodo
 
         if id_usuario < nodo.id_usuario:
-            nodo.izquierdo = self._insertar(nodo.izquierdo, id_usuario, datos)
+            nodo.izquierdo = self.insertar_aux(nodo.izquierdo, id_usuario, datos)
         elif id_usuario > nodo.id_usuario:
-            nodo.derecho = self._insertar(nodo.derecho, id_usuario, datos)
+            nodo.derecho = self.insertar_aux(nodo.derecho, id_usuario, datos)
         else:
             print(f"El usuario con ID {id_usuario} ya existe.")
             return nodo
@@ -153,25 +164,26 @@ class SistemaGestionUsuarios:
 
 
 
-def menu():
+def menu(self):
     # sistema = SistemaGestionUsuarios()
-    Tabla_Menu = [
+    
+    while True:
+        Tabla_Menu = [
         ["1", "Agregar Usuario"],
         ["2", "Eliminar Usuario"],
         ["3", "Mostrar Usuario con ID mayor"],
         ["4", "Mostrar Usuario con ID menor"],
         ["5", "Busqueda de Usuario por ID"],
         ["6", "Mostrar Usuarios Activos"],
-        ["0", "Salir"]
-    ]
-    print(tabulate(Tabla_Menu, headers=["Opción", "Descripción"], tablefmt="rounded_outline"))
-    while True:
+        ["0", "Salir"]]
+        
+        print(tabulate(Tabla_Menu, headers=["Opción", "Descripción"], tablefmt="rounded_outline"))
         try:
             opc = int(input("Seleccione una opción: "))
             match opc:
                 case 1:
                     pass
-                    #insertar_usuario()
+                    self.insertar_usuario()
                 case 2:
                     pass
                     #eliminar_usuario()
@@ -193,13 +205,13 @@ def menu():
                 case _:
                     print("Opción no válida. Intente de nuevo.")
         except ValueError:
-            print("Entrada no válida. Por favor, ingrese un número entero.")
+            print("Entrada no válida. Por favor, ingrese un número entero.")
 
                 
 
 if __name__ == "__main__":
     sistema = SistemaGestionUsuarios()
-    menu()
+    menu(sistema)
     """sistema.agregar_usuario(50, {"nombre": "Ana"})
     sistema.agregar_usuario(30, {"nombre": "Luis"})
     sistema.agregar_usuario(70, {"nombre": "Marta"})
