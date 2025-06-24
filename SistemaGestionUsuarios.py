@@ -13,7 +13,8 @@ class SistemaGestionUsuarios(NodoUsuario):
 
     def factor_de_balanceo(self, nodo):
         if nodo:
-            return self.altura(nodo.izquierdo) - self.altura(nodo.derecho)
+            f_balance = self.altura(nodo.izquierdo) - self.altura(nodo.derecho)
+            return f_balance
         else:
             return 0
             
@@ -50,14 +51,14 @@ class SistemaGestionUsuarios(NodoUsuario):
 
     def balancear(self, nodo):
         self.actualizar_altura(nodo)
-        balance = self.factor_de_balanceo(nodo)
+        f_balance = self.factor_de_balanceo(nodo)
 
-        if balance > 1:
+        if f_balance > 1:
             if self.factor_de_balanceo(nodo.izquierdo) < 0:
                 nodo.izquierdo = self.rotar_izquierda(nodo.izquierdo)
             return self.rotar_derecha(nodo)
 
-        if balance < -1:
+        if f_balance < -1:
             if self.factor_de_balanceo(nodo.derecho) > 0:
                 nodo.derecho = self.rotar_derecha(nodo.derecho)
             return self.rotar_izquierda(nodo)
